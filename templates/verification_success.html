@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Record Verified - LANDTRUST</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f4f6f8;
+        }
+
+        header {
+            background: #17324d;
+            color: white;
+            padding: 20px 40px;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        header p {
+            margin: 5px 0 0;
+        }
+
+        .container {
+            padding: 50px 30px;
+        }
+
+        .card {
+            background: white;
+            max-width: 700px;
+            margin: auto;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .success {
+            color: #176b3a;
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .record-box {
+            background: #f4f6f8;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+            text-align: left;
+        }
+
+        .record-box p {
+            margin: 10px 0;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #17324d;
+        }
+
+        button {
+            background: #17324d;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #244d70;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>LANDTRUST</h1>
+
+    <p>
+        AI-Assisted Land Record Digitization & Validation
+    </p>
+
+</header>
+
+
+<div class="container">
+
+    <div class="card">
+
+        <div class="success">
+            ✓ Record {{ status }}
+        </div>
+
+
+        <p>
+            The land record has successfully passed
+            the human verification stage.
+        </p>
+
+
+        <div class="record-box">
+
+            <p>
+                <span class="label">
+                    LANDTRUST Record ID:
+                </span>
+
+                {{ record_id }}
+            </p>
+
+
+            <p>
+                <span class="label">
+                    Verification Status:
+                </span>
+
+                {{ status }}
+            </p>
+
+
+            <p>
+                <span class="label">
+                    Verified Land Area:
+                </span>
+
+                {{ corrected_land_area }}
+            </p>
+
+
+            <p>
+                <span class="label">
+                    Verification:
+                </span>
+
+                Human Verified
+            </p>
+
+        </div>
+
+
+        <p>
+            The verified record has been stored in the
+            LANDTRUST database and can be tracked through
+            its audit history.
+        </p>
+
+
+        <br>
+
+
+        <a href="/">
+            <button>
+                Back to Dashboard
+            </button>
+        </a>
+
+    </div>
+
+</div>
+
+
+</body>
+
+</html>

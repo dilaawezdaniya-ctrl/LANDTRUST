@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Human Verification - LANDTRUST</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f4f6f8;
+        }
+
+        header {
+            background: #17324d;
+            color: white;
+            padding: 20px 40px;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        header p {
+            margin: 5px 0 0;
+        }
+
+        .container {
+            padding: 30px 40px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            color: #17324d;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #eef2f5;
+            color: #17324d;
+        }
+
+        .verified {
+            color: #176b3a;
+            font-weight: bold;
+        }
+
+        .conflict {
+            color: #b42318;
+            font-weight: bold;
+        }
+
+        .review {
+            background: #fff4e5;
+            border-left: 5px solid #f79009;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #17324d;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            max-width: 500px;
+            padding: 12px;
+            border: 1px solid #bbb;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .button-group {
+            margin-top: 20px;
+        }
+
+        button {
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+
+        .approve-button {
+            background: #176b3a;
+        }
+
+        .approve-button:hover {
+            background: #12552e;
+        }
+
+        .correct-button {
+            background: #17324d;
+        }
+
+        .correct-button:hover {
+            background: #244d70;
+        }
+
+        .back-button {
+            background: #666;
+        }
+
+        .back-button:hover {
+            background: #444;
+        }
+
+        .audit-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .audit-row {
+            margin-bottom: 10px;
+        }
+
+        .audit-label {
+            font-weight: bold;
+            color: #17324d;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>LANDTRUST</h1>
+
+    <p>
+        AI-Assisted Land Record Digitization & Validation
+    </p>
+
+</header>
+
+
+<div class="container">
+
+
+    <!-- REVIEW RECORD -->
+
+    <div class="card">
+
+        <h2>Review Extracted Record</h2>
+
+        <p>
+            LANDTRUST detected a field that requires
+            human verification.
+        </p>
+
+
+        <table>
+
+            <tr>
+
+                <th>Field</th>
+
+                <th>Extracted Value</th>
+
+                <th>Reference Value</th>
+
+                <th>Confidence</th>
+
+                <th>Action</th>
+
+            </tr>
+
+
+            {% for field, result in validation_results.items() %}
+
+            <tr>
+
+                <td>
+                    {{ field.replace("_", " ").title() }}
+                </td>
+
+                <td>
+                    {{ result["extracted"] }}
+                </td>
+
+                <td>
+                    {{ result["reference"] }}
+                </td>
+
+                <td>
+
+                    {% if result["status"] == "Conflict" %}
+
+                        <span class="conflict">
+                            {{ result["confidence"] }}%
+                        </span>
+
+                    {% else %}
+
+                        <span class="verified">
+                            {{ result["confidence"] }}%
+                        </span>
+
+                    {% endif %}
+
+                </td>
+
+                <td>
+
+                    {% if result["status"] == "Conflict" %}
+
+                        <span class="conflict">
+                            ⚠ Review Required
+                        </span>
+
+                    {% elif result["status"] == "Match" %}
+
+                        <span class="verified">
+                            ✓ Verified
+                        </span>
+
+                    {% else %}
+
+                        Not Checked
+
+                    {% endif %}
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+
+    <!-- HUMAN VERIFICATION -->
+
+    <div class="card">
+
+        <h2>Verifier Decision</h2>
+
+        <div class="review">
+
+            <strong>Human Verification Required</strong>
+
+            <p>
+                The extracted land area differs from
+                the reference value. Please verify the
+                correct value before saving the record.
+            </p>
+
+        </div>
+
+
+        <form method="POST"
+              action="/verify">
+
+
+            <div style="margin-top: 25px;">
+
+                <label for="corrected_land_area">
+
+                    Corrected Land Area
+
+                </label>
+
+
+                <input
+                    type="text"
+                    id="corrected_land_area"
+                    name="corrected_land_area"
+                    value="{{ validation_results['land_area']['reference'] }}"
+                    required
+                >
+
+            </div>
+
+
+            <div class="button-group">
+
+
+                <!-- APPROVE -->
+
+                <button
+                    type="submit"
+                    name="action"
+                    value="approve"
+                    class="approve-button">
+
+                    ✓ Approve Record
+
+                </button>
+
+
+                <!-- CORRECT -->
+
+                <button
+                    type="submit"
+                    name="action"
+                    value="correct"
+                    class="correct-button">
+
+                    Correct & Verify
+
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+    </div>
+
+
+    <!-- AUDIT TRAIL -->
+
+    <div class="card">
+
+        <h2>Audit Trail</h2>
+
+        <div class="audit-box">
+
+            <div class="audit-row">
+
+                <span class="audit-label">
+                    Original Extracted Value:
+                </span>
+
+                {{ validation_results['land_area']['extracted'] }}
+
+            </div>
+
+
+            <div class="audit-row">
+
+                <span class="audit-label">
+                    Reference Value:
+                </span>
+
+                {{ validation_results['land_area']['reference'] }}
+
+            </div>
+
+
+            <div class="audit-row">
+
+                <span class="audit-label">
+                    Confidence:
+                </span>
+
+                {{ validation_results['land_area']['confidence'] }}%
+
+            </div>
+
+
+            <div class="audit-row">
+
+                <span class="audit-label">
+                    Verification Status:
+                </span>
+
+                Pending Human Verification
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- NAVIGATION -->
+
+    <a href="/">
+
+        <button class="back-button">
+            Back to Dashboard
+        </button>
+
+    </a>
+
+
+</div>
+
+
+</body>
+
+</html>

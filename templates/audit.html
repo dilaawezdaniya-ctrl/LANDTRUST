@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Audit History - LANDTRUST</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f4f6f8;
+        }
+
+        header {
+            background: #17324d;
+            color: white;
+            padding: 25px 40px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 32px;
+        }
+
+        header p {
+            margin: 6px 0 0;
+            font-size: 18px;
+        }
+
+        .container {
+            padding: 35px 40px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+
+            box-shadow:
+                0 2px 8px rgba(0,0,0,0.08);
+
+            overflow-x: auto;
+        }
+
+        h2 {
+            color: #17324d;
+            margin-top: 0;
+        }
+
+        .record-id {
+            background: #eef2f5;
+            padding: 18px;
+            border-radius: 7px;
+            margin: 20px 0 25px;
+            color: #17324d;
+            font-size: 18px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+
+        th {
+            background: #eef2f5;
+            color: #17324d;
+            padding: 14px;
+            text-align: left;
+            border-bottom: 2px solid #ddd;
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background: #fafafa;
+        }
+
+        .corrected {
+            color: #176b3a;
+            font-weight: bold;
+        }
+
+        .action {
+            color: #176b3a;
+            font-weight: bold;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-size: 18px;
+        }
+
+        .back-button {
+            background: #17324d;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 25px;
+            margin-right: 10px;
+        }
+
+        .back-button:hover {
+            background: #244d70;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>LANDTRUST</h1>
+
+    <p>
+        Audit History & Verification Trail
+    </p>
+
+</header>
+
+
+<div class="container">
+
+
+    <div class="card">
+
+        <h2>Record Audit History</h2>
+
+
+        <div class="record-id">
+
+            <strong>
+                LANDTRUST Record ID:
+            </strong>
+
+            {{ record_id }}
+
+        </div>
+
+
+        {% if history %}
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Audit ID</th>
+
+                    <th>Field</th>
+
+                    <th>Original Value</th>
+
+                    <th>New Value</th>
+
+                    <th>Action</th>
+
+                    <th>Verifier</th>
+
+                    <th>Timestamp</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for item in history %}
+
+                <tr>
+
+                    <td>
+                        {{ item.audit_id }}
+                    </td>
+
+                    <td>
+                        {{ item.field_name.replace("_", " ").title() }}
+                    </td>
+
+                    <td>
+                        {{ item.old_value }}
+                    </td>
+
+                    <td class="corrected">
+                        {{ item.new_value }}
+                    </td>
+
+                    <td class="action">
+
+                        {% if item.action == "Corrected" %}
+
+                            ✓ Corrected
+
+                        {% else %}
+
+                            ✓ {{ item.action }}
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+                        {{ item.verifier_name }}
+                    </td>
+
+                    <td>
+                        {{ item.action_timestamp }}
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+
+        {% else %}
+
+        <div class="empty">
+
+            No audit history found for this record.
+
+        </div>
+
+        {% endif %}
+
+
+    </div>
+
+
+    <a href="/records">
+
+        <button class="back-button">
+            Back to Trusted Records
+        </button>
+
+    </a>
+
+
+    <a href="/">
+
+        <button class="back-button">
+            Back to Dashboard
+        </button>
+
+    </a>
+
+
+</div>
+
+
+</body>
+
+</html>

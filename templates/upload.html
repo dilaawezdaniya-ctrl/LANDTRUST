@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Upload Land Record - LANDTRUST</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f4f6f8;
+        }
+
+        header {
+            background: #17324d;
+            color: white;
+            padding: 20px 40px;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .container {
+            padding: 40px;
+        }
+
+        .upload-card {
+            background: white;
+            max-width: 700px;
+            margin: auto;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        input[type="file"] {
+            margin: 25px 0;
+            padding: 10px;
+        }
+
+        button {
+            background: #17324d;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #244d70;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>LANDTRUST</h1>
+</header>
+
+<div class="container">
+
+    <div class="upload-card">
+
+        <h2>Upload Land Record</h2>
+
+        <p>
+            Upload a scanned or digital land-record document
+            for AI-assisted processing.
+        </p>
+
+        <form method="POST" enctype="multipart/form-data">
+
+            <input
+                type="file"
+                name="land_record"
+                accept=".pdf,.png,.jpg,.jpeg"
+                required
+            >
+
+            <br>
+
+            <button type="submit">
+                Process Land Record
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

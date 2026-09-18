@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>LANDTRUST Dashboard</title>
+
+
+    <style>
+
+        body {
+
+            font-family: Arial, sans-serif;
+
+            margin: 0;
+
+            background: #f4f6f8;
+
+        }
+
+
+        header {
+
+            background: #17324d;
+
+            color: white;
+
+            padding: 20px 40px;
+
+        }
+
+
+        header h1 {
+
+            margin: 0;
+
+        }
+
+
+        header p {
+
+            margin: 5px 0 0;
+
+        }
+
+
+        .container {
+
+            padding: 30px 40px;
+
+        }
+
+
+        .cards {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 20px;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .card {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 10px;
+
+            box-shadow:
+                0 2px 8px rgba(0,0,0,0.08);
+
+        }
+
+
+        .card h3 {
+
+            margin-top: 0;
+
+            color: #555;
+
+        }
+
+
+        .number {
+
+            font-size: 32px;
+
+            font-weight: bold;
+
+            color: #17324d;
+
+        }
+
+
+        .upload-box {
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 10px;
+
+            text-align: center;
+
+            box-shadow:
+                0 2px 8px rgba(0,0,0,0.08);
+
+        }
+
+
+        button {
+
+            background: #17324d;
+
+            color: white;
+
+            border: none;
+
+            padding: 12px 25px;
+
+            border-radius: 6px;
+
+            cursor: pointer;
+
+            font-size: 16px;
+
+        }
+
+
+        button:hover {
+
+            background: #244d70;
+
+        }
+
+
+        a {
+
+            text-decoration: none;
+
+        }
+
+
+        .records-button {
+
+            margin-top: 15px;
+
+            background: #176b3a;
+
+        }
+
+
+        .records-button:hover {
+
+            background: #12552e;
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>LANDTRUST</h1>
+
+    <p>
+        AI-Assisted Land Record Digitization & Validation
+    </p>
+
+</header>
+
+
+<div class="container">
+
+
+    <h2>Dashboard</h2>
+
+
+    <div class="cards">
+
+
+        <!-- DOCUMENTS PROCESSED -->
+
+        <div class="card">
+
+            <h3>
+                Documents Processed
+            </h3>
+
+            <div class="number">
+
+                {{ stats.documents_processed }}
+
+            </div>
+
+        </div>
+
+
+        <!-- VERIFIED RECORDS -->
+
+        <div class="card">
+
+            <h3>
+                Verified Records
+            </h3>
+
+            <div class="number">
+
+                {{ stats.verified_records }}
+
+            </div>
+
+        </div>
+
+
+        <!-- PENDING VERIFICATION -->
+
+        <div class="card">
+
+            <h3>
+                Pending Verification
+            </h3>
+
+            <div class="number">
+
+                {{ stats.pending_verification }}
+
+            </div>
+
+        </div>
+
+
+        <!-- CORRECTIONS TRACKED -->
+
+        <div class="card">
+
+            <h3>
+                Corrections Tracked
+            </h3>
+
+            <div class="number">
+
+                {{ stats.corrections_tracked }}
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- PROCESS RECORD -->
+
+    <div class="upload-box">
+
+        <h2>
+            Process a Land Record
+        </h2>
+
+
+        <p>
+
+            Upload a scanned, handwritten or
+            legacy land-record document for
+            AI-assisted extraction and validation.
+
+        </p>
+
+
+        <a href="/upload">
+
+            <button>
+
+                Upload Land Record
+
+            </button>
+
+        </a>
+
+
+        <br>
+
+
+        <a href="/records">
+
+            <button class="records-button">
+
+                View Trusted Records
+
+            </button>
+
+        </a>
+
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>
