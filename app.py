@@ -22,7 +22,6 @@ app = Flask(__name__)
 
 @app.route("/")
 def dashboard():
-
     stats = get_dashboard_stats()
 
     return render_template(
@@ -37,7 +36,6 @@ def dashboard():
 
 @app.route("/records")
 def records():
-
     all_records = get_all_land_records()
 
     return render_template(
@@ -52,7 +50,6 @@ def records():
 
 @app.route("/audit/<int:record_id>")
 def audit(record_id):
-
     history = get_audit_history(record_id)
 
     return render_template(
@@ -80,28 +77,17 @@ def upload():
 
         file.save(file_path)
 
-        # STEP 1: Extract text
-        extracted_text = extract_text_from_pdf(
-            file_path
-        )
+        extracted_text = extract_text_from_pdf(file_path)
 
-        # STEP 2: Extract fields
-        fields = extract_land_fields(
-            extracted_text
-        )
+        fields = extract_land_fields(extracted_text)
 
-        # STEP 3: Validate fields
-        validation_results = validate_record(
-            fields
-        )
+        validation_results = validate_record(fields)
 
-        # Check for conflicts
         has_conflict = any(
             result["status"] == "Conflict"
             for result in validation_results.values()
         )
 
-        # Send conflicting records for human verification
         if has_conflict:
 
             return render_template(
@@ -110,7 +96,6 @@ def upload():
                 raw_text=extracted_text
             )
 
-        # No conflict
         return render_template(
             "extraction.html",
             fields=fields,
@@ -118,9 +103,7 @@ def upload():
             validation_results=validation_results
         )
 
-    return render_template(
-        "upload.html"
-    )
+    return render_template("upload.html")
 
 
 # ------------------------------------------------
@@ -140,7 +123,7 @@ def verify():
 
 
     # ------------------------------------------------
-    # APPROVE
+    # APPROVE RECORD
     # ------------------------------------------------
 
     if action == "approve":
@@ -148,7 +131,6 @@ def verify():
         extracted_land_area = corrected_land_area
 
         fields = {
-
             "district": "Pune",
             "tehsil": "Mulshi",
             "village": "Example Village",
@@ -157,7 +139,6 @@ def verify():
             "land_owner": "Ramesh Kumar",
             "land_area": extracted_land_area,
             "land_classification": "Agricultural"
-
         }
 
         record_id = save_land_record(
@@ -190,32 +171,23 @@ def verify():
 
     elif action == "correct":
 
-        # This is the value extracted from our demo document.
         original_value = "3.21 Hectare"
 
         if not corrected_land_area:
 
             return "Please enter a corrected land area."
 
-
         fields = {
-
             "district": "Pune",
             "tehsil": "Mulshi",
             "village": "Example Village",
             "khata_number": "452",
             "survey_number": "127/2",
             "land_owner": "Ramesh Kumar",
-
-            # Original extracted value
             "land_area": original_value,
-
             "land_classification": "Agricultural"
-
         }
 
-
-        # Save trusted record
         record_id = save_land_record(
             fields,
             corrected_land_area,
@@ -223,8 +195,6 @@ def verify():
             verifier_name
         )
 
-
-        # Save audit trail
         save_audit_history(
             record_id,
             "land_area",
@@ -233,7 +203,6 @@ def verify():
             "Corrected",
             verifier_name
         )
-
 
         return render_template(
             "verification_success.html",
@@ -247,11 +216,8 @@ def verify():
 
 
 # ------------------------------------------------
-# START APPLICATION
+# RUN APPLICATION
 # ------------------------------------------------
 
 if __name__ == "__main__":
-
-    app.run(
-        debug=True
-    )
+    app.run()
