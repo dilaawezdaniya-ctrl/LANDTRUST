@@ -1,14 +1,18 @@
+import os
 import mysql.connector
 from datetime import datetime
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 def get_connection():
 
     return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="daisy@2006",
-        database="landtrust_db"
+        host=os.getenv("MYSQL_HOST"),
+        user=os.getenv("MYSQL_USER"),
+        password=os.getenv("MYSQL_PASSWORD"),
+        database=os.getenv("MYSQL_DATABASE")
     )
 
 
@@ -197,7 +201,6 @@ def get_dashboard_stats():
     connection = get_connection()
     cursor = connection.cursor()
 
-
     # Total documents processed
     cursor.execute("""
         SELECT COUNT(*)
@@ -205,7 +208,6 @@ def get_dashboard_stats():
     """)
 
     documents_processed = cursor.fetchone()[0]
-
 
     # Verified records
     cursor.execute("""
@@ -217,7 +219,6 @@ def get_dashboard_stats():
 
     verified_records = cursor.fetchone()[0]
 
-
     # Currently pending records
     cursor.execute("""
         SELECT COUNT(*)
@@ -226,7 +227,6 @@ def get_dashboard_stats():
     """)
 
     pending_verification = cursor.fetchone()[0]
-
 
     # Historical corrections
     cursor.execute("""
@@ -237,23 +237,12 @@ def get_dashboard_stats():
 
     corrections_tracked = cursor.fetchone()[0]
 
-
     cursor.close()
     connection.close()
 
-
     return {
-
-        "documents_processed":
-            documents_processed,
-
-        "verified_records":
-            verified_records,
-
-        "pending_verification":
-            pending_verification,
-
-        "corrections_tracked":
-            corrections_tracked
-
+        "documents_processed": documents_processed,
+        "verified_records": verified_records,
+        "pending_verification": pending_verification,
+        "corrections_tracked": corrections_tracked
     }
