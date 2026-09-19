@@ -10,15 +10,12 @@ def get_connection():
 
     return mysql.connector.connect(
         host=os.getenv("MYSQL_HOST"),
+        port=int(os.getenv("MYSQL_PORT", "3306")),
         user=os.getenv("MYSQL_USER"),
         password=os.getenv("MYSQL_PASSWORD"),
         database=os.getenv("MYSQL_DATABASE")
     )
 
-
-# ------------------------------------------------
-# SAVE LAND RECORD
-# ------------------------------------------------
 
 def save_land_record(
     fields,
@@ -78,10 +75,6 @@ def save_land_record(
     return record_id
 
 
-# ------------------------------------------------
-# SAVE AUDIT HISTORY
-# ------------------------------------------------
-
 def save_audit_history(
     record_id,
     field_name,
@@ -123,10 +116,6 @@ def save_audit_history(
     connection.close()
 
 
-# ------------------------------------------------
-# GET ALL LAND RECORDS
-# ------------------------------------------------
-
 def get_all_land_records():
 
     connection = get_connection()
@@ -158,10 +147,6 @@ def get_all_land_records():
     return records
 
 
-# ------------------------------------------------
-# GET AUDIT HISTORY
-# ------------------------------------------------
-
 def get_audit_history(record_id):
 
     connection = get_connection()
@@ -192,16 +177,11 @@ def get_audit_history(record_id):
     return history
 
 
-# ------------------------------------------------
-# DASHBOARD STATISTICS
-# ------------------------------------------------
-
 def get_dashboard_stats():
 
     connection = get_connection()
     cursor = connection.cursor()
 
-    # Total documents processed
     cursor.execute("""
         SELECT COUNT(*)
         FROM land_records
@@ -209,7 +189,6 @@ def get_dashboard_stats():
 
     documents_processed = cursor.fetchone()[0]
 
-    # Verified records
     cursor.execute("""
         SELECT COUNT(*)
         FROM land_records
@@ -219,7 +198,6 @@ def get_dashboard_stats():
 
     verified_records = cursor.fetchone()[0]
 
-    # Currently pending records
     cursor.execute("""
         SELECT COUNT(*)
         FROM land_records
@@ -228,7 +206,6 @@ def get_dashboard_stats():
 
     pending_verification = cursor.fetchone()[0]
 
-    # Historical corrections
     cursor.execute("""
         SELECT COUNT(*)
         FROM audit_history
