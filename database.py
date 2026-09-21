@@ -1,13 +1,13 @@
 import os
-import mysql.connector
 from datetime import datetime
+
+import mysql.connector
 from dotenv import load_dotenv
 
 load_dotenv()
 
 
 def get_connection():
-
     return mysql.connector.connect(
         host=os.getenv("MYSQL_HOST"),
         port=int(os.getenv("MYSQL_PORT", "3306")),
@@ -23,7 +23,6 @@ def save_land_record(
     verification_status,
     verifier_name
 ):
-
     connection = get_connection()
     cursor = connection.cursor()
 
@@ -42,10 +41,7 @@ def save_land_record(
             verifier_name,
             verified_at
         )
-        VALUES (
-            %s, %s, %s, %s, %s, %s,
-            %s, %s, %s, %s, %s, %s
-        )
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
 
     values = (
@@ -83,7 +79,6 @@ def save_audit_history(
     action,
     verifier_name
 ):
-
     connection = get_connection()
     cursor = connection.cursor()
 
@@ -117,7 +112,6 @@ def save_audit_history(
 
 
 def get_all_land_records():
-
     connection = get_connection()
     cursor = connection.cursor(dictionary=True)
 
@@ -148,7 +142,6 @@ def get_all_land_records():
 
 
 def get_audit_history(record_id):
-
     connection = get_connection()
     cursor = connection.cursor(dictionary=True)
 
@@ -178,7 +171,6 @@ def get_audit_history(record_id):
 
 
 def get_dashboard_stats():
-
     connection = get_connection()
     cursor = connection.cursor()
 
@@ -192,8 +184,7 @@ def get_dashboard_stats():
     cursor.execute("""
         SELECT COUNT(*)
         FROM land_records
-        WHERE verification_status IN
-        ('Approved', 'Corrected & Verified')
+        WHERE verification_status IN ('Approved', 'Corrected & Verified')
     """)
 
     verified_records = cursor.fetchone()[0]
